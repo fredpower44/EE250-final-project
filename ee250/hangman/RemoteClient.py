@@ -39,9 +39,12 @@ if __name__ == '__main__':
 
     PORT_BUTTON = 4 #D4
     PORT_ROTARY = 0 #A0
-    PORT_BUZZER = -1 #not set yet
+    PORT_BUZZER = 1 #A1
 
     lcd.setRGB(0,32,0)
+    grovepi.analogWrite(PORT_BUZZER, 512)
+    time.sleep(0.5)
+    grovepi.analogWrite(PORT_BUZZER, 0)
 
     letter = chr(0)
     while True:
