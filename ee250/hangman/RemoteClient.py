@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     lcd.setRGB(0,0,32)
 
-    letter = chr('-')
+    letter = chr(0)
     while True:
         letterValue = int(grovepi.analogRead(PORT_ROTARY) / 39.385 + 0.5)
         nextLetter = chr(97 + letterValue)
