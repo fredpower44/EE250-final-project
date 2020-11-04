@@ -17,6 +17,7 @@ def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
     client.subscribe("fyzhang/correct")
     client.message_callback_add("fyzhang/correct", correctCallback)
+    client.subscribe("fyzhang/quit", quitCallback)
 
 #Default message callback. Please use custom callbacks.
 def on_message(client, userdata, msg):
@@ -25,14 +26,32 @@ def on_message(client, userdata, msg):
 #callback to check correctness
 def correctCallback(client, userdata, msg):
     if str(msg.payload, "utf-8") == "CORRECT":
-        print("Right")
+        correctBuzzer()
     elif str(msg.payload, "utf-8") == "INCORRECT":
-        print("Wrong")
         incorrectBuzzer()
 
+#callback for the win/lose message
+def quitCallback(client, userdata, msg):
+    if str(msg.payload, "utf-8") == "WIN":
+        print("Win")
+    elif str(msg.payload, "utf-8") == "LOSE":
+        print("Lose")
+        incorrectBuzzer()
+
+#buzzer for incorrect guess
 def incorrectBuzzer():
     grovepi.digitalWrite(PORT_BUZZER, 1)
     time.sleep(0.5)
+    grovepi.digitalWrite(PORT_BUZZER, 0)
+
+#buzzer for correct guess
+def correctBuzzer():
+    grovepi.digitalWrite(PORT_BUZZER, 1)
+    time.sleep(0.1)
+    grovepi.digitalWrite(PORT_BUZZER, 0)
+    time.sleep(0.05)
+    grovepi.digitalWrite(PORT_BUZZER, 1)
+    time.sleep(0.05)
     grovepi.digitalWrite(PORT_BUZZER, 0)
 
 if __name__ == '__main__':

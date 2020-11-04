@@ -84,7 +84,9 @@ if __name__ == "__main__":
 
 	#Print win/lose game message
 	if lives == 0:
+		client.publish("fyzhang/quit", "LOSE")
 		print("You have no more lives. You lost.")
 	else:
+		client.publish("fyzhang/quit", "WIN")
 		print("Congratulations! You won!")
 	print("The word was: " + fullWord)
