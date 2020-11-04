@@ -41,7 +41,7 @@ if __name__ == '__main__':
     PORT_ROTARY = 0 #A0
     PORT_BUZZER = -1 #not set yet
 
-    lcd.setRGB(0,0,32)
+    lcd.setRGB(0,32,0)
 
     letter = chr(0)
     while True:
@@ -50,6 +50,9 @@ if __name__ == '__main__':
         if nextLetter != letter:
             letter = nextLetter
             lcd.setText_norefresh(letter)
+        if grovepi.digitalRead(PORT_BUTTON):
+            client.publish("fyzhang/guess", str(letter))
+            while grovepi.digitalRead(PORT_BUTTON)
 
 
     # #defining the ports
