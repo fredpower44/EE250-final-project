@@ -2,8 +2,6 @@ import requests
 import paho.mqtt.client as mqtt
 import time
 
-
-
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
     client.subscribe("fyzhang/guess")
@@ -13,7 +11,6 @@ def guessCallback(client, userdata, msg):
 	guess = str(msg.payload, "utf-8")
 	global guessQueue
 	guessQueue.append(guess)
-	print(guessQueue)
 
 def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
@@ -51,8 +48,7 @@ if __name__ == "__main__":
 	global word
 	global hiddenWord
 	global fullWord
-	word = getRandomWord()
-	word = 'ruffled'
+	word = getRandomWord().lower()
 	fullWord = word
 	print(word)
 	hiddenWord = ''
@@ -77,7 +73,7 @@ if __name__ == "__main__":
 			time.sleep(0.1)
 		# guess = input()
 		guess = guessQueue.pop(0)
-		if guess in word:
+		if guess in fullWord:
 			guessLetter(guess)
 			client.publish("fyzhang/correct", "CORRECT")
 		else:

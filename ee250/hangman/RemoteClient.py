@@ -10,12 +10,12 @@ import time
 import sys
 sys.path.append('../../Software/Python/')
 sys.path.append('../../Software/Python/grove_rgb_lcd')
-# import grovepi
-# import grove_rgb_lcd
+#import grovepi
+#import grove_rgb_lcd
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
-    client.subscribe("RPI_fyzhang/correct")
+    client.subscribe("fyzhang/correct")
     client.message_callback_add("fyzhang/correct", correctCallback)
 
 #Default message callback. Please use custom callbacks.
