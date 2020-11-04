@@ -52,7 +52,7 @@ if __name__ == '__main__':
             lcd.setText_norefresh(letter)
         if grovepi.digitalRead(PORT_BUTTON):
             client.publish("fyzhang/guess", str(letter))
-            while grovepi.digitalRead(PORT_BUTTON)
+            while grovepi.digitalRead(PORT_BUTTON):
 
 
     # #defining the ports
