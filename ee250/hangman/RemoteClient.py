@@ -53,7 +53,7 @@ if __name__ == '__main__':
         if grovepi.digitalRead(PORT_BUTTON):
             client.publish("fyzhang/guess", str(letter))
             while grovepi.digitalRead(PORT_BUTTON):
-
+                time.sleep(0.1)
 
     # #defining the ports
     # Ranger = 4
