@@ -1,7 +1,6 @@
 import requests
 import paho.mqtt.client as mqtt
-import time
-import sys
+
 
 def getRandomWord():
 	word = '-'
@@ -19,6 +18,8 @@ def getRandomWord():
 	return word
 
 def main():
+	client = mqtt.Client()
+
 	word = getRandomWord()
 	# print(word)
 	hiddenWord = ''
