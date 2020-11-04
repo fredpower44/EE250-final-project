@@ -28,7 +28,7 @@ def correctCallback(client, userdata, msg):
         print("Right")
     elif str(msg.payload, "utf-8") == "INCORRECT":
         print("Wrong")
-        incorrectBuzzer
+        incorrectBuzzer()
 
 def incorrectBuzzer():
     grovepi.digitalWrite(PORT_BUZZER, 1)
