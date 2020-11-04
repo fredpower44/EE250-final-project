@@ -49,9 +49,8 @@ if __name__ == '__main__':
         nextLetter = chr(97 + letterValue)
         if nextLetter != letter:
             letter = nextLetter
-            lcd.setText_norefresh(letter)
+            lcd.setText_norefresh("Your guess: " + letter)
         if grovepi.digitalRead(PORT_BUTTON):
-            print(str(letter))
             client.publish("fyzhang/guess", str(letter))
             while grovepi.digitalRead(PORT_BUTTON):
                 time.sleep(0.1)
