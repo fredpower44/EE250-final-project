@@ -10,8 +10,8 @@ import time
 import sys
 sys.path.append('../../Software/Python/')
 sys.path.append('../../Software/Python/grove_rgb_lcd')
-#import grovepi
-#import grove_rgb_lcd
+import grovepi
+import grove_rgb_lcd as lcd
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
@@ -37,10 +37,21 @@ if __name__ == '__main__':
     client.connect(host="eclipse.usc.edu", port=11000, keepalive=60)
     client.loop_start()
 
+    PORT_BUTTON = 4 #D4
+    PORT_ROTARY = 0 #A0
+    PORT_BUZZER = -1 #not set yet
+
+    lcd.setRGB(0,0,32)
+
+    letter = chr('-')
     while True:
-        guess = input()
-        client.publish("fyzhang/guess", guess)
-        print("done")
+        letterValue = int(grovepi.analogRead(PORT_ROTARY) / 39.385 + 0.5)
+        nextLetter = chr(97 + letterValue)
+        if nextLetter != letter:
+            letter = nextLetter
+            lcd.setText_norefresh(letter)
+
+
     # #defining the ports
     # Ranger = 4
     # LED = 3
