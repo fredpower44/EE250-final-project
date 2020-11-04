@@ -28,6 +28,12 @@ def correctCallback(client, userdata, msg):
         print("Right")
     elif str(msg.payload, "utf-8") == "INCORRECT":
         print("Wrong")
+        incorrectBuzzer
+
+def incorrectBuzzer():
+    grovepi.digitalWrite(PORT_BUZZER, 1)
+    time.sleep(0.5)
+    grovepi.digitalWrite(PORT_BUZZER, 0)
 
 if __name__ == '__main__':
     #this section is covered in publisher_and_subscriber_example.py
@@ -39,12 +45,9 @@ if __name__ == '__main__':
 
     PORT_BUTTON = 4 #D4
     PORT_ROTARY = 0 #A0
-    PORT_BUZZER = 1 #A1
+    PORT_BUZZER = 3 #D3
 
     lcd.setRGB(0,32,0)
-    grovepi.analogWrite(PORT_BUZZER, 512)
-    time.sleep(0.5)
-    grovepi.analogWrite(PORT_BUZZER, 0)
 
     letter = chr(0)
     while True:
