@@ -11,6 +11,7 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("fyzhang/correct")
     client.message_callback_add("fyzhang/correct", correctCallback)
     client.subscribe("fyzhang/quit", quitCallback)
+    client.message_callback_add("fyzhang/quit", quitCallback)
 
 #Default message callback. Please use custom callbacks.
 def on_message(client, userdata, msg):
@@ -69,11 +70,15 @@ if __name__ == '__main__':
             nextLetter = chr(97 + letterValue)
             if nextLetter != letter:
                 letter = nextLetter
+                print(3)
                 lcd.setText_norefresh("Your guess: " + letter)
+                print(4)
             if grovepi.digitalRead(PORT_BUTTON):
                 client.publish("fyzhang/guess", str(letter))
+                print(1)
                 while grovepi.digitalRead(PORT_BUTTON):
                     time.sleep(0.1)
+                print(2)
     # except KeyboardInterrupt:
     #     lcd.setText('')
     #     lcd.setRGB(0,0,0)
