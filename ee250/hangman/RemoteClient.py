@@ -39,21 +39,23 @@ def quitCallback(client, userdata, msg):
 
 #buzzer for incorrect guess
 def incorrectBuzzer():
-    with lock:
-        grovepi.digitalWrite(PORT_BUZZER, 1)
-        time.sleep(0.5)
-        grovepi.digitalWrite(PORT_BUZZER, 0)
+    lock.acquire()
+    grovepi.digitalWrite(PORT_BUZZER, 1)
+    time.sleep(0.5)
+    grovepi.digitalWrite(PORT_BUZZER, 0)
+    lock.release()
 
 #buzzer for correct guess
 def correctBuzzer():
-    with lock:
-        grovepi.digitalWrite(PORT_BUZZER, 1)
-        time.sleep(0.05)
-        grovepi.digitalWrite(PORT_BUZZER, 0)
-        time.sleep(0.03)
-        grovepi.digitalWrite(PORT_BUZZER, 1)
-        time.sleep(0.05)
-        grovepi.digitalWrite(PORT_BUZZER, 0)
+    lock.acquire()
+    grovepi.digitalWrite(PORT_BUZZER, 1)
+    time.sleep(0.05)
+    grovepi.digitalWrite(PORT_BUZZER, 0)
+    time.sleep(0.03)
+    grovepi.digitalWrite(PORT_BUZZER, 1)
+    time.sleep(0.05)
+    grovepi.digitalWrite(PORT_BUZZER, 0)
+    lock.release()
 
 if __name__ == '__main__':
     # try:
@@ -66,9 +68,11 @@ if __name__ == '__main__':
         PORT_BUTTON = 4 #D4
         PORT_ROTARY = 0 #A0
         PORT_BUZZER = 3 #D3
-        with lock:
-            lcd.setRGB(0,32,0)
-            grovepi.digitalWrite(PORT_BUZZER, 0)
+
+        lock.acquire()
+        lcd.setRGB(0,32,0)
+        grovepi.digitalWrite(PORT_BUZZER, 0)
+        lock.release()
 
         letter = chr(0)
         while True:
