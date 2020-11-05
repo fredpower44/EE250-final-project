@@ -19,8 +19,10 @@ def on_message(client, userdata, msg):
 #callback to check correctness
 def correctCallback(client, userdata, msg):
     if str(msg.payload, "utf-8") == "CORRECT":
+        print("Right!")
         correctBuzzer()
     elif str(msg.payload, "utf-8") == "INCORRECT":
+        print("Wrong!")
         incorrectBuzzer()
 
 #callback for the win/lose message
