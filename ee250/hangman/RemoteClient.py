@@ -5,9 +5,7 @@ sys.path.append('../../Software/Python/')
 sys.path.append('../../Software/Python/grove_rgb_lcd')
 import grovepi
 import grove_rgb_lcd as lcd
-import threading
 
-lock = threading.Lock()
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
@@ -39,17 +37,14 @@ def quitCallback(client, userdata, msg):
 
 #buzzer for incorrect guess
 def incorrectBuzzer():
-    lock.acquire()
     global WrongFlag
     grovepi.digitalWrite(PORT_BUZZER, 1)
     time.sleep(0.5)
     grovepi.digitalWrite(PORT_BUZZER, 0)
     WrongFlag = False
-    lock.release()
 
 #buzzer for correct guess
 def correctBuzzer():
-    lock.acquire()
     global RightFlag
     grovepi.digitalWrite(PORT_BUZZER, 1)
     time.sleep(0.04)
@@ -59,7 +54,6 @@ def correctBuzzer():
     time.sleep(0.04)
     grovepi.digitalWrite(PORT_BUZZER, 0)
     RightFlag = False
-    lock.release()
 
 def checkFlags():
     global RightFlag
@@ -98,10 +92,8 @@ if __name__ == '__main__':
         WinFlag = False
         LoseFlag = False
 
-        lock.acquire()
         lcd.setRGB(0,32,0)
         grovepi.digitalWrite(PORT_BUZZER, 0)
-        lock.release()
 
         letter = chr(0)
         while True:
