@@ -48,7 +48,7 @@ def correctBuzzer():
     grovepi.digitalWrite(PORT_BUZZER, 0)
 
 if __name__ == '__main__':
-    try:
+    # try:
         client = mqtt.Client()
         client.on_message = on_message
         client.on_connect = on_connect
