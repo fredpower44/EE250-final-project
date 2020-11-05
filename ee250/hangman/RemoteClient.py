@@ -23,11 +23,11 @@ def on_message(client, userdata, msg):
 #callback to check correctness
 def correctCallback(client, userdata, msg):
     if str(msg.payload, "utf-8") == "CORRECT":
-        print("Right!")
-        correctBuzzer()
+        global RightFlag
+        RightFlag = True
     elif str(msg.payload, "utf-8") == "INCORRECT":
-        print("Wrong!")
-        incorrectBuzzer()
+        global WrongFlag
+        WrongFlag = True
 
 #callback for the win/lose message
 def quitCallback(client, userdata, msg):
@@ -40,14 +40,17 @@ def quitCallback(client, userdata, msg):
 #buzzer for incorrect guess
 def incorrectBuzzer():
     lock.acquire()
+    global WrongFlag
     grovepi.digitalWrite(PORT_BUZZER, 1)
     time.sleep(0.5)
     grovepi.digitalWrite(PORT_BUZZER, 0)
+    WrongFlag = False
     lock.release()
 
 #buzzer for correct guess
 def correctBuzzer():
     lock.acquire()
+    global RightFlag
     grovepi.digitalWrite(PORT_BUZZER, 1)
     time.sleep(0.05)
     grovepi.digitalWrite(PORT_BUZZER, 0)
@@ -55,7 +58,23 @@ def correctBuzzer():
     grovepi.digitalWrite(PORT_BUZZER, 1)
     time.sleep(0.05)
     grovepi.digitalWrite(PORT_BUZZER, 0)
+    RightFlag = False
     lock.release()
+
+def checkFlags():
+    global RightFlag
+    global WrongFlag
+    global WinFlag
+    global LoseFlag
+    if RightFlag:
+        correctBuzzer()
+    elif WrongFlag:
+        incorrectBuzzer()
+    if WinFlag:
+        print("Win")
+    elif LoseFlag:
+        print("Lose")
+
 
 if __name__ == '__main__':
     # try:
@@ -69,6 +88,16 @@ if __name__ == '__main__':
         PORT_ROTARY = 0 #A0
         PORT_BUZZER = 3 #D3
 
+        #Flags
+        global RightFlag
+        global WrongFlag
+        global WinFlag
+        global LoseFlag
+        RightFlag = False
+        WrongFlag = False
+        WinFlag = False
+        LoseFlag = False
+
         lock.acquire()
         lcd.setRGB(0,32,0)
         grovepi.digitalWrite(PORT_BUZZER, 0)
@@ -76,25 +105,17 @@ if __name__ == '__main__':
 
         letter = chr(0)
         while True:
-            lock.acquire()
             letterValue = int(grovepi.analogRead(PORT_ROTARY) / 39.385)
-            lock.release()
             nextLetter = chr(97 + letterValue)
             if nextLetter != letter:
                 letter = nextLetter
-                lock.acquire()
                 lcd.setText_norefresh("Your guess: " + letter)
-                lock.release()
-            lock.acquire()
             if grovepi.digitalRead(PORT_BUTTON):
-                lock.release()
                 client.publish("fyzhang/guess", str(letter))
-                lock.acquire()
                 while grovepi.digitalRead(PORT_BUTTON):
-                    lock.release()
+                    checkFlags()
                     time.sleep(0.1)
-                    lock.acquire()
-            lock.release()
+            checkFlags()
     # except KeyboardInterrupt:
     #     lcd.setText('')
     #     lcd.setRGB(0,0,0)
