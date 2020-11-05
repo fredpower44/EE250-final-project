@@ -29,6 +29,7 @@ def correctCallback(client, userdata, msg):
 
 #callback for the win/lose message
 def quitCallback(client, userdata, msg):
+    print("WHAT")
     if str(msg.payload, "utf-8") == "WIN":
         global WinFlag
         WinFlag = True
