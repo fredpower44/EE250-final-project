@@ -47,11 +47,11 @@ def incorrectBuzzer():
 #buzzer for correct guess
 def correctBuzzer():
     grovepi.digitalWrite(PORT_BUZZER, 1)
-    time.sleep(0.1)
+    time.sleep(0.05)
     grovepi.digitalWrite(PORT_BUZZER, 0)
-    time.sleep(0.05)
+    time.sleep(0.025)
     grovepi.digitalWrite(PORT_BUZZER, 1)
-    time.sleep(0.05)
+    time.sleep(0.025)
     grovepi.digitalWrite(PORT_BUZZER, 0)
 
 if __name__ == '__main__':
