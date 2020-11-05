@@ -5,6 +5,9 @@ sys.path.append('../../Software/Python/')
 sys.path.append('../../Software/Python/grove_rgb_lcd')
 import grovepi
 import grove_rgb_lcd as lcd
+import threading
+
+lock = threading.Lock()
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
@@ -36,19 +39,21 @@ def quitCallback(client, userdata, msg):
 
 #buzzer for incorrect guess
 def incorrectBuzzer():
-    grovepi.digitalWrite(PORT_BUZZER, 1)
-    time.sleep(0.5)
-    grovepi.digitalWrite(PORT_BUZZER, 0)
+    with lock:
+        grovepi.digitalWrite(PORT_BUZZER, 1)
+        time.sleep(0.5)
+        grovepi.digitalWrite(PORT_BUZZER, 0)
 
 #buzzer for correct guess
 def correctBuzzer():
-    grovepi.digitalWrite(PORT_BUZZER, 1)
-    time.sleep(0.05)
-    grovepi.digitalWrite(PORT_BUZZER, 0)
-    time.sleep(0.03)
-    grovepi.digitalWrite(PORT_BUZZER, 1)
-    time.sleep(0.05)
-    grovepi.digitalWrite(PORT_BUZZER, 0)
+    with lock:
+        grovepi.digitalWrite(PORT_BUZZER, 1)
+        time.sleep(0.05)
+        grovepi.digitalWrite(PORT_BUZZER, 0)
+        time.sleep(0.03)
+        grovepi.digitalWrite(PORT_BUZZER, 1)
+        time.sleep(0.05)
+        grovepi.digitalWrite(PORT_BUZZER, 0)
 
 if __name__ == '__main__':
     # try:
@@ -66,19 +71,16 @@ if __name__ == '__main__':
 
         letter = chr(0)
         while True:
-            letterValue = int(grovepi.analogRead(PORT_ROTARY) / 39.385)
-            nextLetter = chr(97 + letterValue)
-            if nextLetter != letter:
-                letter = nextLetter
-                print(3)
-                lcd.setText_norefresh("Your guess: " + letter)
-                print(4)
-            if grovepi.digitalRead(PORT_BUTTON):
-                client.publish("fyzhang/guess", str(letter))
-                print(1)
-                while grovepi.digitalRead(PORT_BUTTON):
-                    time.sleep(0.1)
-                print(2)
+            with lock:
+                letterValue = int(grovepi.analogRead(PORT_ROTARY) / 39.385)
+                nextLetter = chr(97 + letterValue)
+                if nextLetter != letter:
+                    letter = nextLetter
+                    lcd.setText_norefresh("Your guess: " + letter)
+                if grovepi.digitalRead(PORT_BUTTON):
+                    client.publish("fyzhang/guess", str(letter))
+                    while grovepi.digitalRead(PORT_BUTTON):
+                        time.sleep(0.1)
     # except KeyboardInterrupt:
     #     lcd.setText('')
     #     lcd.setRGB(0,0,0)
