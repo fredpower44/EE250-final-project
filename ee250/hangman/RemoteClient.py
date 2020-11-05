@@ -30,16 +30,17 @@ def correctCallback(client, userdata, msg):
 #callback for the win/lose message
 def quitCallback(client, userdata, msg):
     if str(msg.payload, "utf-8") == "WIN":
-        print("Win")
+        global WinFlag
+        WinFlag = True
     elif str(msg.payload, "utf-8") == "LOSE":
-        print("Lose")
-        incorrectBuzzer()
+        global LoseFlag
+        LoseFlag = True
 
 #buzzer for incorrect guess
 def incorrectBuzzer():
     global WrongFlag
     grovepi.digitalWrite(PORT_BUZZER, 1)
-    time.sleep(0.5)
+    time.sleep(0.4)
     grovepi.digitalWrite(PORT_BUZZER, 0)
     WrongFlag = False
 
@@ -71,7 +72,7 @@ def checkFlags():
 
 
 if __name__ == '__main__':
-    # try:
+    try:
         client = mqtt.Client()
         client.on_message = on_message
         client.on_connect = on_connect
@@ -108,7 +109,7 @@ if __name__ == '__main__':
                     checkFlags()
                     time.sleep(0.1)
             checkFlags()
-    # except KeyboardInterrupt:
-    #     lcd.setText('')
-    #     lcd.setRGB(0,0,0)
-    #     grovepi.digitalWrite(PORT_BUZZER, 0)
+    except KeyboardInterrupt:
+        lcd.setText('')
+        lcd.setRGB(0,0,0)
+        grovepi.digitalWrite(PORT_BUZZER, 0)
