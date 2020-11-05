@@ -76,7 +76,9 @@ if __name__ == '__main__':
 
         letter = chr(0)
         while True:
+            lock.acquire()
             letterValue = int(grovepi.analogRead(PORT_ROTARY) / 39.385)
+            lock.release()
             nextLetter = chr(97 + letterValue)
             if nextLetter != letter:
                 letter = nextLetter
