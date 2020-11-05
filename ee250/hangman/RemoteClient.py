@@ -72,7 +72,7 @@ if __name__ == '__main__':
                 client.publish("fyzhang/guess", str(letter))
                 while grovepi.digitalRead(PORT_BUTTON):
                     time.sleep(0.1)
-    except KeyboardInterrupt:
-        lcd.setText('')
-        lcd.setRGB(0,0,0)
-        grovepi.digitalWrite(PORT_BUZZER, 0)
+    # except KeyboardInterrupt:
+    #     lcd.setText('')
+    #     lcd.setRGB(0,0,0)
+    #     grovepi.digitalWrite(PORT_BUZZER, 0)
