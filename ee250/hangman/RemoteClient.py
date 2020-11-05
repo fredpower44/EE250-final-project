@@ -44,7 +44,7 @@ def correctBuzzer():
     grovepi.digitalWrite(PORT_BUZZER, 0)
     time.sleep(0.03)
     grovepi.digitalWrite(PORT_BUZZER, 1)
-    time.sleep(0.03)
+    time.sleep(0.05)
     grovepi.digitalWrite(PORT_BUZZER, 0)
 
 if __name__ == '__main__':
