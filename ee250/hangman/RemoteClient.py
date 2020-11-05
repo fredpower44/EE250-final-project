@@ -52,11 +52,11 @@ def correctBuzzer():
     lock.acquire()
     global RightFlag
     grovepi.digitalWrite(PORT_BUZZER, 1)
-    time.sleep(0.05)
+    time.sleep(0.04)
     grovepi.digitalWrite(PORT_BUZZER, 0)
     time.sleep(0.03)
     grovepi.digitalWrite(PORT_BUZZER, 1)
-    time.sleep(0.05)
+    time.sleep(0.04)
     grovepi.digitalWrite(PORT_BUZZER, 0)
     RightFlag = False
     lock.release()
