@@ -72,16 +72,17 @@ if __name__ == '__main__':
 
         letter = chr(0)
         while True:
-            with lock:
-                letterValue = int(grovepi.analogRead(PORT_ROTARY) / 39.385)
-                nextLetter = chr(97 + letterValue)
-                if nextLetter != letter:
-                    letter = nextLetter
-                    lcd.setText_norefresh("Your guess: " + letter)
-                if grovepi.digitalRead(PORT_BUTTON):
-                    client.publish("fyzhang/guess", str(letter))
-                    while grovepi.digitalRead(PORT_BUTTON):
-                        time.sleep(0.1)
+            lock.acquire()
+            letterValue = int(grovepi.analogRead(PORT_ROTARY) / 39.385)
+            nextLetter = chr(97 + letterValue)
+            if nextLetter != letter:
+                letter = nextLetter
+                lcd.setText_norefresh("Your guess: " + letter)
+            if grovepi.digitalRead(PORT_BUTTON):
+                client.publish("fyzhang/guess", str(letter))
+                while grovepi.digitalRead(PORT_BUTTON):
+                    time.sleep(0.1)
+            lock.release()
     # except KeyboardInterrupt:
     #     lcd.setText('')
     #     lcd.setRGB(0,0,0)
