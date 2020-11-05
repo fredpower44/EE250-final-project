@@ -11,7 +11,7 @@ def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
     client.subscribe("fyzhang/correct")
     client.message_callback_add("fyzhang/correct", correctCallback)
-    client.subscribe("fyzhang/quit", quitCallback)
+    client.subscribe("fyzhang/quit")
     client.message_callback_add("fyzhang/quit", quitCallback)
 
 #Default message callback. Please use custom callbacks.
