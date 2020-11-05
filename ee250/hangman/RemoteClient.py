@@ -29,7 +29,6 @@ def correctCallback(client, userdata, msg):
 
 #callback for the win/lose message
 def quitCallback(client, userdata, msg):
-    print("WHAT")
     if str(msg.payload, "utf-8") == "WIN":
         global WinFlag
         WinFlag = True
@@ -57,6 +56,22 @@ def correctBuzzer():
     grovepi.digitalWrite(PORT_BUZZER, 0)
     RightFlag = False
 
+def win():
+    global WinFlag
+    global EndFlag
+    EndFlag = True
+    lcd.setText("You win!")
+    lcd.setRGB(0,32,0)
+    WinFlag = False
+
+def lose():
+    global LoseFlag
+    global EndFlag
+    EndFlag = True
+    lcd.setText("You lose!")
+    lcd.setRGB(32,0,0)
+    LoseFlag = False
+
 def checkFlags():
     global RightFlag
     global WrongFlag
@@ -67,9 +82,9 @@ def checkFlags():
     elif WrongFlag:
         incorrectBuzzer()
     if WinFlag:
-        print("Win")
+        win()
     elif LoseFlag:
-        print("Lose")
+        lose()
 
 
 if __name__ == '__main__':
@@ -89,16 +104,18 @@ if __name__ == '__main__':
         global WrongFlag
         global WinFlag
         global LoseFlag
+        global EndFlag
         RightFlag = False
         WrongFlag = False
         WinFlag = False
         LoseFlag = False
+        EndFlag = False
 
-        lcd.setRGB(0,32,0)
+        lcd.setRGB(0,16,16)
         grovepi.digitalWrite(PORT_BUZZER, 0)
 
         letter = chr(0)
-        while True:
+        while not EndFlag:
             letterValue = int(grovepi.analogRead(PORT_ROTARY) / 39.385)
             nextLetter = chr(97 + letterValue)
             if nextLetter != letter:
