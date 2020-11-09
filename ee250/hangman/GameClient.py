@@ -35,7 +35,7 @@ def getRandomWord():
 def guessLetter(guess):
 	global word
 	global hiddenWord
-	print(word)
+	# print(word)
 	while guess in word:
 		ind = int(word.find(guess))
 		hiddenWord = hiddenWord[0:ind] + word[ind] + hiddenWord[ind+1:len(word)]
@@ -90,3 +90,4 @@ if __name__ == "__main__":
 		client.publish("fyzhang/quit", "WIN")
 		print("Congratulations! You won!")
 	print("The word was: " + fullWord)
+	time.sleep(3)
