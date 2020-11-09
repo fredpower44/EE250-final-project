@@ -50,7 +50,7 @@ if __name__ == "__main__":
 	global fullWord
 	word = getRandomWord().lower()
 	fullWord = word
-	print(word)
+	# print(word)
 	hiddenWord = ''
 	while len(hiddenWord) < len(word):
 		hiddenWord = hiddenWord + '_'
