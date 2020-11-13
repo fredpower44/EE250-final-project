@@ -23,7 +23,7 @@ def getRandomWord():
 			'hasDictionaryDef': True,
 			'minCorpusCount': 100,
 			'limit': 1,
-			'api_key': 'a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5'
+			'api_key': '23hyp8nh193424j5kwhrjc09j0r9y9n37hhu7rg6x2gcdkcsd'
 		}
 		response = requests.get('http://api.wordnik.com/v4/words.json/randomWords', params)
 		if response.status_code == 200:
